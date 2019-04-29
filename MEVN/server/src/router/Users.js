@@ -3,7 +3,7 @@ const express = require("express")
 const users = express.Router()
 const cors = require("cors")
 var mysql = require('mysql');
-
+const jwt = require("jsonwebtoken")
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -12,14 +12,15 @@ var con = mysql.createConnection({
 });
 users.use(cors())
 
+process.env.SECRET_KEY = 'secret'
+
+
 users.post("/register", (req, res) => {
   const data = [
     req.body.username,
     req.body.password,
     req.body.role
   ]
-
-
   //add to db
   con.connect(function (err) {
 
@@ -40,12 +41,47 @@ users.post("/register", (req, res) => {
           if (err) throw err;
           console.log("1 record inserted");
         });
-        res.send()
+        res.send("Registered")
       }
 
     });
   });
   //
+})
+
+users.post('/login', (req, res) => {
+  const dataLogin = [
+    req.body.username,
+    req.body.password
+  ]
+
+  con.connect(function (err) {
+
+    console.log("Connected!: Checking");
+    con.query(`SELECT * FROM user_table WHERE USERNAME = '${dataLogin[0]}' AND PASSWORD = '${dataLogin[1]}'`, function (err, result) {
+      console.log(dataLogin)
+      if (err) throw err;
+
+      if (result.length > 0) {
+        dataLogin.push(result[0].ROLE)
+        console.log(dataLogin)
+        let token = jwt.sign({
+          dataLogin
+        }, process.env.SECRET_KEY, {
+          expiresIn: 1440
+        })
+        res.send(token)
+        console.log("Send token")
+      } else {
+        message = "No username"
+        console.log(message)
+        res.send(message)
+        //res.send(message)
+      }
+
+    });
+  });
+
 })
 
 

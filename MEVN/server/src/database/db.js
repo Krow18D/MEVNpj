@@ -10,13 +10,13 @@ var con = mysql.createConnection({
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
-  con.query("SELECT USERNAME FROM user_table WHERE USERNAME = 'karin'", function (err, result) {
+  con.query("SELECT * FROM user_table WHERE USERNAME = 'karin'", function (err, result) {
     if (err) throw err;
     
-    if(result.length > 0 )
+    if(result.length > 0 ){
     console.log("y")
-    // console.log(result[0].USERNAME);
-    else 
+    console.log(typeof(result[0].ROLE));
+    }else 
     console.log("No")
 
   });

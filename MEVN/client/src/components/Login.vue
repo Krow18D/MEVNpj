@@ -28,7 +28,9 @@
 </template>
 
 <script>
+import axios from 'axios'
 import router from '../router'
+import  jwtDecode from 'jwt-decode'
   export default {
     data() {
       return {
@@ -46,16 +48,31 @@ import router from '../router'
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
-        if (this.form.username === this.admin.username && this.form.password === this.admin.password)
+        if (this.form.username !='' && this.form.password != '')
         {
           //alert(JSON.stringify(this.form))
-          router.push({path:'/register'})
+          axios.post('http://localhost:8081/users/login',{
+            username: this.form.username,
+            password: this.form.password
+          }).then(res =>{
+            localStorage.setItem('usertoken',res.data)
+            this.form.username = ''
+            this.form.password = ''
+            if(res.data != 'No username'){
+              const decode = jwtDecode(res.data)
+              if(decode.dataLogin[2]==='admin')
+                router.push('/admin')
+              else router.push('/user')
+            }else{
+              alert("Wrong username or password")
+            }
+
+          })
+          eventBus.$emit('logged-in','loggedin')
+          
+          
         }
-        else{
-          alert("Wrong username or password")
-          this.form.username = ''
-          this.form.password = ''
-        }
+        
         
       },
       onReset(evt) {
@@ -106,6 +123,7 @@ import router from '../router'
         const response = await LoginAPI.getLogin()
         this.resdt = response.data
       }
+
     }
   }
 

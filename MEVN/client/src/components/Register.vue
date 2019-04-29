@@ -107,9 +107,6 @@ import axios from 'axios'
             this.form.password = ''
             this.form.password2 =''
             this.form.role = null
-            // router.push({
-            //   path: 'Login'
-            // })
           }).catch(err => {
             console.log(err)
           })
