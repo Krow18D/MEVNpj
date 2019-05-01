@@ -67,6 +67,10 @@ import axios from 'axios'
   import router from '../router'
   import Navbar from './Navbar'
   export default {
+    created()  {
+    const decode = JSON.parse(localStorage.getItem('usertoken'))
+    if(decode.role === 'user')router.push({path: '/user'})
+  },
     data() {
       return {
         form: {
@@ -102,7 +106,7 @@ import axios from 'axios'
         } 
 
         else {
-            axios.post('http://localhost:8081/users', {
+            axios.post('http://localhost:8000/users', {
             username: this.form.username,
             password: this.form.password,
             role: this.form.role

@@ -5,6 +5,8 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AdminDash from '@/components/AdminDashBoard'
 import UserDash from '@/components/UserDashBoard'
+import VueRouter from 'vue-router';
+
 Vue.use(Router)
 
 export default new Router({
@@ -17,21 +19,26 @@ export default new Router({
     {
       path: '/register',
       name: 'Register',
-      component: Register
+      component: Register,
+      
     },
     {
       path: '/admin',
       name: 'AdminDash',
-      component: AdminDash
+      component: AdminDash,
+      
     },
     {
       path: '/user',
       name: 'UserDash',
-      component: UserDash
+      component: UserDash,
+      
     }
-    // {
-    //   name: 'Navbar',
-    //   component: Navbar
-    // }
+    
   ]
+})
+const router = new VueRouter({})
+
+router.beforeEach((to,from,next)=>{
+
 })

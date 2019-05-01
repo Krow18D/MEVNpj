@@ -1,6 +1,7 @@
 <template>
   <div>
     <title>Login</title>
+    <b-img :src="require('@/assets/growx.png')" fluid alt="Responsive image" style="height:30vh ; "></b-img>
     <b-container class="bv-example-row" >
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
 
@@ -35,10 +36,16 @@ import  jwtDecode from 'jwt-decode'
 
 
   export default {
-    
+    created()  {
+    const decode = JSON.parse(localStorage.getItem('usertoken'))
+    if(decode.role === 'admin')router.push({path: '/admin'})
+    if(decode.role === 'user')router.push({path: '/user'})
+  },
     data() {
+      
+      
       return {
-        
+      
         admin:{
           username: 'admin',
           password: 'admin'
@@ -47,7 +54,8 @@ import  jwtDecode from 'jwt-decode'
           username: '',
           password: ''
         },
-        show: true
+        show: true,
+          
       }
     },
     methods: {
@@ -56,21 +64,33 @@ import  jwtDecode from 'jwt-decode'
         if (this.form.username !='' && this.form.password != '')
         {
           //alert(JSON.stringify(this.form))
-          axios.post('http://localhost:8081/login',{
+          axios.post('http://localhost:8000/login',{
             username: this.form.username,
             password: this.form.password
           }).then(res =>{
             localStorage.setItem('usertoken',JSON.stringify(res.data.result[0]))
             // this.form.username = ''
             // this.form.password = ''
-            if(res.data != 'No username'){
+            //alert(res.data.result)
+            if(res.data.result.length != []){
               //const decode  = jwtDecode(res.data)
               const decode = JSON.parse(localStorage.getItem('usertoken'))
               if(decode.role==='admin')
                 {
                   router.push('/admin')
                 }
-              else router.push('/user')
+              else {
+
+                // axios.post('http://localhost:8000/farms',{
+                //   option: 'list',
+                //   username: decode.username
+                // }).then(res =>{
+                //   alert(res.data.result)
+                //   localStorage.setItem('userFarm',JSON.stringify(res.data.result))
+                // })
+
+                router.push('/user')
+              }
             }else{
               alert("Wrong username or password")
             }

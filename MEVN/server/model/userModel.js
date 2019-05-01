@@ -57,7 +57,7 @@ User.getUserByUsername = function(username, result){
     });
 };
 User.getAllUser = function(result){
-    sql.query("SELECT role FROM user", function(err, res){
+    sql.query("SELECT username,role FROM user", function(err, res){
         if(err){
             console.log("error ", err);
             result(err, null);
