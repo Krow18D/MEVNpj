@@ -1,7 +1,7 @@
 <template>
   <div>
     <title>Login</title>
-    <b-container class="bv-example-row">
+    <b-container class="bv-example-row" >
       <b-form @submit="onSubmit" @reset="onReset" v-if="show">
 
         <b-row class="justify-content-md-center">
@@ -24,6 +24,7 @@
         <b-button type="reset" variant="danger">Reset</b-button>
       </b-form>
     </b-container>
+    <!-- {{getName}} -->
   </div>
 </template>
 
@@ -31,9 +32,13 @@
 import axios from 'axios'
 import router from '../router'
 import  jwtDecode from 'jwt-decode'
+
+
   export default {
+    
     data() {
       return {
+        
         admin:{
           username: 'admin',
           password: 'admin'
@@ -51,22 +56,24 @@ import  jwtDecode from 'jwt-decode'
         if (this.form.username !='' && this.form.password != '')
         {
           //alert(JSON.stringify(this.form))
-          axios.post('http://localhost:8081/users/login',{
+          axios.post('http://localhost:8081/login',{
             username: this.form.username,
             password: this.form.password
           }).then(res =>{
-            localStorage.setItem('usertoken',res.data)
-            this.form.username = ''
-            this.form.password = ''
+            localStorage.setItem('usertoken',JSON.stringify(res.data.result[0]))
+            // this.form.username = ''
+            // this.form.password = ''
             if(res.data != 'No username'){
-              const decode = jwtDecode(res.data)
-              if(decode.dataLogin[2]==='admin')
-                router.push('/admin')
+              //const decode  = jwtDecode(res.data)
+              const decode = JSON.parse(localStorage.getItem('usertoken'))
+              if(decode.role==='admin')
+                {
+                  router.push('/admin')
+                }
               else router.push('/user')
             }else{
               alert("Wrong username or password")
             }
-
           })
           eventBus.$emit('logged-in','loggedin')
           
@@ -93,39 +100,5 @@ import  jwtDecode from 'jwt-decode'
 
 
 <style>
-
+  
 </style>
-
-<!-- 
-<script>
-  import LoginAPI from '@/services/LoginAPI.js'
-  export default {
-    computed: {
-      nameState() {
-        return this.name.length > 0 ? true : false
-      },
-      passwordState() {
-        return this.password.length > 0 ? true : false
-      }
-    },
-    data() {
-      return {
-        name: '',
-        password: '',
-        resdt: []
-      }
-    },
-    mounted() {
-      this.loadLogin()
-    },
-    methods: {
-      async loadLogin() {
-        const response = await LoginAPI.getLogin()
-        this.resdt = response.data
-      }
-
-    }
-  }
-
-</script>
--->

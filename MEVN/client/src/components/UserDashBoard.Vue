@@ -2,7 +2,7 @@
     <div >
     <title>DashBoard</title>
         <Navbar></Navbar>
-        <h1>Admin DashBoard</h1>
+        <h1>User DashBoard</h1>
     </div>
 </template>
 

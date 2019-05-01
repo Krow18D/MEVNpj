@@ -1,6 +1,8 @@
 <template>
   <div>
+    <Navbar></Navbar>
     <title>Register</title>
+    
     <b-container class="bv-example-row" style="width:20vw">
       <b-card bg-variant="light">
         <b-form @submit="onSubmit" @reset="onBack" v-if="show">
@@ -63,6 +65,7 @@
 <script>
 import axios from 'axios'
   import router from '../router'
+  import Navbar from './Navbar'
   export default {
     data() {
       return {
@@ -85,7 +88,9 @@ import axios from 'axios'
         roleState: null
       }
     },
-
+    components: {
+    'Navbar': Navbar
+  },
     methods: {
       onSubmit(evt) {
         evt.preventDefault()
@@ -97,16 +102,17 @@ import axios from 'axios'
         } 
 
         else {
-            axios.post('http://localhost:8081/users/register', {
+            axios.post('http://localhost:8081/users', {
             username: this.form.username,
             password: this.form.password,
             role: this.form.role
           }).then(res => {
-            alert(res.data)
+            alert(res.data.message)
             this.form.username = ''
             this.form.password = ''
             this.form.password2 =''
             this.form.role = null
+            
           }).catch(err => {
             console.log(err)
           })
@@ -128,8 +134,9 @@ import axios from 'axios'
         })
         //back to admin dashboard
         router.push({
-          path: '/'
+          path: '/admin'
         })
+
       }
     },
     computed: {

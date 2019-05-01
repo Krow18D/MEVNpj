@@ -4,7 +4,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import AdminDash from '@/components/AdminDashBoard'
-
+import UserDash from '@/components/UserDashBoard'
 Vue.use(Router)
 
 export default new Router({
@@ -24,6 +24,11 @@ export default new Router({
       name: 'AdminDash',
       component: AdminDash
     },
+    {
+      path: '/user',
+      name: 'UserDash',
+      component: UserDash
+    }
     // {
     //   name: 'Navbar',
     //   component: Navbar
