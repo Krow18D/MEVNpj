@@ -3,7 +3,7 @@
     <Navbar></Navbar>
     <title>Register</title>
     
-    <b-container class="bv-example-row" style="width:20vw">
+    <b-container class="bv-example-row" style="width:20vw ; margin-top: 100px">
       <b-card bg-variant="light">
         <b-form @submit="onSubmit" @reset="onBack" v-if="show">
 

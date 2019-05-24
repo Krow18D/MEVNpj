@@ -77,19 +77,29 @@ import  jwtDecode from 'jwt-decode'
               const decode = JSON.parse(localStorage.getItem('usertoken'))
               if(decode.role==='admin')
                 {
+                  axios.get('http://localhost:8000/users').then(res =>{
+                    localStorage.setItem('test',JSON.stringify(res.data.result))
+                    //alert(localStorage.getItem('test'))
+                    localStorage.setItem('path','admin')
+                    localStorage.setItem('user','admin')
                   router.push('/admin')
+                  })
                 }
               else {
+                axios.post('http://localhost:8000/farms/',{
+                option: 'list',
+                username: this.form.username
 
-                // axios.post('http://localhost:8000/farms',{
-                //   option: 'list',
-                //   username: decode.username
-                // }).then(res =>{
-                //   alert(res.data.result)
-                //   localStorage.setItem('userFarm',JSON.stringify(res.data.result))
-                // })
+            }).then(res =>{
+                localStorage.setItem('farm',JSON.stringify(res.data.result))
+                localStorage.setItem('path','admin')
+                //alert(localStorage.getItem('farm'))
+                localStorage.setItem('user','user')
+                router.push({path: '/user'})         
 
-                router.push('/user')
+            })
+                localStorage.setItem('path','user')
+               // router.push('/user')
               }
             }else{
               alert("Wrong username or password")

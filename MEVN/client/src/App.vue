@@ -2,6 +2,7 @@
 <template>
   <div id="app">
     <router-view/>
+    <canvas id="myChart"></canvas>
   </div>
 </template>
 

@@ -8,12 +8,20 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 Vue.use(BootstrapVue)
+window.eventBus = new Vue()
 Vue.config.productionTip = false
 
+import "chart.js";
+import "hchs-vue-charts";
+
+Vue.use(window.VueCharts);
+Vue.use(BootstrapVue)
+Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  render: h => h(App)
 })
